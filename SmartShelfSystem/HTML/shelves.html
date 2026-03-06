@@ -43,5 +43,64 @@
             </div>
         </ul>
     </nav>
+
+    <main class="main-container">
+
+        <div class="shelves-container" id="shelves-container">
+            <div class="shelfA">
+                <h1>
+                    Shelf A
+                </h1>
+                <div class="fruit-content">
+                    <div class="bg-img">
+                        <img src="{{ url_for('static', filename='IMAGE/pear-image.png') }}" class="img-fruits" >
+                    </div>
+                    <div class="name-of-fruits">
+                        <span>Pear</span>
+                    </div>
+                </div>
+            </div>
+                
+             <div class="shelfB">
+                <h1>
+                    Shelf B
+                </h1>
+                <div class="fruit-content">
+                    <div class="bg-img">
+                        <img src="{{ url_for('static', filename='IMAGE/mangosteen-image.png') }}" class="img-fruits">
+                    </div>
+                    <div class="name-of-fruits">
+                        <span>Mangosteen</span>
+                    </div>
+                </div>
+            </div>
+
+             <div class="shelfC">
+                <h1>
+                    Shelf C
+                </h1>
+
+                <div class="fruit-content">
+                    <div class="bg-img">
+                        <img src="{{ url_for('static', filename='IMAGE/avocado-image.png') }}" class="img-fruits">
+                    </div>
+                    <div class="name-of-fruits">
+                        <span>Avocado</span>
+                    </div>
+                </div>
+             </div>
+
+
+             
+        </div>
+
+         <div class="livestream">
+            <h1>Livestream</h1> 
+            <div class="online"> 
+            </div>  
+        </div>
+
+       
+    </main>   
 </body>
 </html>
