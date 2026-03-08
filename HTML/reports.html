@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/reports.css') }}">
+</head>
+<body>
+    <nav id="sidebar">
+        <ul>
+            <li class="name">
+                <h1 class="name-logo">Smart<span>SHELF</span></h1>
+                <button id="toggle-btn">
+                    <img src="{{ url_for('static', filename='Icons/arrow-left.svg') }}">
+                </button>
+            </li>
+            <div class="main-dash">
+                <li >
+                    <a href="home.html">
+                        <img src="{{ url_for('static', filename='Icons/dashboard.svg') }}">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="shelves.html">
+                        <img src="{{ url_for('static', filename='Icons/shelves.svg') }}">
+                        <span>Shelves</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="reports.html">
+                        <img src="{{ url_for('static', filename='Icons/reports.svg') }}">
+                        <span>Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <img src="{{ url_for('static', filename='Icons/settings.svg') }}">
+                        <span>Settings</span>
+                    </a>
+                </li>
+            </div>
+        </ul>
+    </nav>
+
+    <main>
+
+        <div class="overview-spoilage-over-time">
+            <div class="freshness">
+                <span>Freshness Overview</span>
+                <div class="overview">
+                    <ul>
+                        <li>Fresh: <span id="freshCount">0</span></li>
+                        <hr>
+                        <li>Need Attention: <span id="attentionCount">0</span></li>
+                        <hr>
+                        <li>Spoiled: <span id="spoiledCount">0</span></li><hr>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="spoilage-overtime">
+                <span>Spoilage Overtime</span>
+            </div>
+        </div>
+
+        
+        <div class="detailed-logs">
+            <h2>Detailed Logs</h2>
+
+            <div class="container-log-table">
+                <table class="tables">
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Shelf</th>
+                    <th>Fruit</th>
+                    <th><strong>Status</strong></th>
+                </tr>
+            </table>
+            </div>
+            
+        </div>
+    </main>
+    
+</body>
+</html>

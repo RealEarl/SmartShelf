@@ -1,0 +1,251 @@
+:root{
+    --base-clr: linear-gradient(to right, #82be9d, #b2d8a6af);
+    --line-clr: #065e20;
+    --hover-clr:rgb(0, 0, 0);
+    --text-clr:rgb(0, 0, 0);
+    --accent-clr:#2602b8;
+    --secondary-text-clr: grey;
+  
+}
+*{
+    margin: 0;
+    padding: 0;
+} 
+
+html{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 24px;
+}
+body {
+    display: flex; /* Gawing Flexbox ang buong page */
+    min-height: 100vh;
+    margin: 0;
+    background: var(--base-clr);
+    overflow-y: hidden; /* Iwas overflow sa gilid */
+}
+.name{
+    width: 200px;
+    height: 30px; /* Ito lang ang ginawa nating rectangle */
+    border-radius: 20px 50px 10px 20px  ;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    display: flex;  
+    margin-top: 12px;
+    background: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
+}
+#sidebar{
+    
+    width: 250px;       /* Fixed width para sa sidebar */
+    flex-shrink: 0;     /* Bawal siyang lumiit kahit masikip ang screen */
+    height: 100vh;
+    position: sticky;   /* Mananatili sa gilid habang nag-sscroll ang main */
+    top: 0;
+    box-sizing: border-box;
+    margin-left: 20px;
+
+    border-radius: 10px 0px 2px rgb(3, 63, 8)
+}
+
+#sidebar li{
+    list-style: none;
+
+}
+
+#sidebar ul li.active a{
+    color: var(--accent-clr)
+}
+
+
+#sidebar > ul > li.name {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 0;                      
+    margin-bottom: 16px;
+    padding-left: 10px;          
+}
+
+#sidebar .name h1 {
+    padding: 0.85em 0.1em 0.85em 0.85em; /* Pinaliit ang 0.1em sa kanan */
+    margin: 0;
+    font-size: 1.5rem; 
+               
+}
+
+/* 3. Siguraduhing walang extra space ang toggle button */
+#toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+#toggle-btn img {
+    width: 25px; /* Adjust mo ang laki ng icon dito */
+    height: auto;
+}
+
+#sidebar a,
+#sidebar .name h1{
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color:var(--text-clr);
+    display: flex;
+    align-items: center;
+    gap: 0.1em;
+       
+}
+.main-dash{
+    width: 200px;
+    height: 410px; 
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    background: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
+}
+
+main{
+    margin-top: 40px;
+    margin-right:20px;
+    padding: 20px;
+    height: 100vh;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    
+}    
+
+ 
+.overview-spoilage-over-time{
+    display:flex;   
+}
+.spoilage-overtime{
+    margin-left: 20px;
+    width: 530px;
+    min-height: 180px; /* Gamitin ang min-height imbes na height lang */
+    background: white;
+    border-radius: 20px;
+    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+}
+.overview {
+    display: flex;
+    align-items: flex-end;
+    flex-direction: column;
+    /* Alisin ang padding-left: 220px at padding-top: 17px */
+    padding: 10px 0; /* Kaunting space lang sa taas at baba */
+    font-size:13px;
+    width: 800px; /* Siguraduhing sakop ang loob ng box */
+    margin-left:-430px;
+    font-weight: bold;
+}
+.overview hr{
+    
+    width:200px;
+    border: 1px solid rgb(96, 95, 95);
+   
+}
+.overview ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.overview li {
+    display: flex;
+    justify-content: flex-start; /* Para nasa kaliwa ang text at nasa kanan ang number */
+    padding: 8px 0;
+}
+.overview span{
+    gap:0;
+    font-size: 1rem;
+    padding:0;
+}
+.freshness {
+    width: 400px;
+    min-height: 180px; /* Gamitin ang min-height imbes na height lang */
+    background: white;
+    border-radius: 20px;
+    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    
+}
+
+.freshness span:first-child {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 10px;
+  
+}
+
+
+.detailed-logs{
+    margin-top: 20px;
+    width: 100%;
+    min-height: 200px; /* Gamitin ang min-height imbes na height lang */
+    background: rgb(231, 223, 223);
+    border-radius: 20px;
+    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    
+}
+.detailed-logs h2{
+    margin-top:-20px;
+    font-size:14px ;
+}
+.container-log-table {
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 10px 20px;
+    box-shadow: 2px 2px 10px rgba(166, 196, 179, 0.3);
+    box-sizing: border-box;
+}
+
+.tables {
+
+    width: 100%;
+    border-collapse: collapse; /* Para mawala ang gaps sa pagitan ng cells */
+    font-size: 12px; /* Maliit na font gaya ng request mo */
+    color: #555;
+    table-layout: auto;
+    border-collapse: collapse;
+}
+
+.tables th, .tables td {
+    margin-top: -10px;
+    text-align: left;
+    padding: 0px 8px 5px; /* Vertical spacing para sa bawat row */
+    border-bottom: 1px solid #050404; /* Manipis na linya sa pagitan ng rows */
+}
+
+/* Eto ang secret para magkadikit ang unang tatlo */
+.tables th:nth-child(1), .tables td:nth-child(1) { width: 100px; } /* Timestamp */
+.tables th:nth-child(2), .tables td:nth-child(2) { width: 80px; }  /* Shelf */
+.tables th:nth-child(3), .tables td:nth-child(3) { width: 120px; } /* Fruit */
+
+/* Ang huling column (Status) ay itutulak pakanan */
+.tables th:last-child, .tables td:last-child {
+   
+    margin-left: 20px;
+}
+
+.tables th {
+    color: #888;
+    font-weight: 600;
+    text-transform: none;
+}
