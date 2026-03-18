@@ -183,6 +183,13 @@ main {
     font-size: 15px;
     margin-top: -50px;
 }
+/* 1. SIGURADUHIN NA MAY GANITO ANG PARENT MO */
+.three-div {
+    position: relative; /* Ito ang anchor; dito ibabase ng table ang pwesto niya */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
 .container {
     display: flex;
@@ -201,7 +208,7 @@ main {
 
 .onlive {
     width: 50%;
-    height: 350px; /* O kahit anong height na gusto mo para sa live status */
+    height: 368px;
     background: white;
     border-radius: 20px;
     padding: 15px;
@@ -209,12 +216,13 @@ main {
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
+    overflow: hidden;
 }
 
-.detection-panel {
-    display: flex;
-    margin-top: 245px; 
+.detection-container {
+    flex: 1;
     width: 100%;
+    margin-top: 10px;
 }
 
 .control-panel {
@@ -294,52 +302,72 @@ hr{
     width:200px;
     border: 1px solid rgb(96, 95, 95)
 }
-.container-table {
-    position: flex;
-    flex-direction: column;
-    margin: -160px 0 0 490px;
-    width: 469px; 
 
-    height: 160px; 
+
+/* 2. UPDATED: CONTAINER TABLE - FIXED POSITION VERSION */
+.container-table {
+    /* BINAGO: Ginawang absolute para hindi na siya apektado ng ibang div */
+    position: absolute; 
+    
+    /* Pwesto: 0 mula sa kanan (dikit sa dulo) */
+    left: 484px; 
+    
+    /* Pwesto: Itatapat natin sa baba ng Freshness box. 
+       I-adjust ang 'top' value na ito (halimbawa 190px o 200px) 
+       hanggang sa makuha mo ang tamang taas na gusto mo. */
+    top: 200px; 
+
+    /* Width at Height */
+    width: 453px; 
+    height: 250px; /* Pinahaba natin gaya ng gusto mo */
 
     background: white;
     border-radius: 15px;
     box-shadow: 2px 2px 10px rgb(166, 196, 179);
     box-sizing: border-box;
-    padding: 10px; 
+    padding: 10px;
+    
+    /* Para hindi siya matakpan ng onlive box */
+    z-index: 5;
 }
 
+/* 3. TABLE STYLES (NO CHANGES) */
 .table {
     width: 100%;
-    padding:-5px;
     border-collapse: collapse;
-
 }
 
 .table th, .table td {
-    /* Mula 8px, gawin nating 4px para sumikip ang rows */
     padding: 7px 5px; 
-    
     text-align: left; 
     border-bottom: 1px solid #f0f0f0;
-    
     font-size: 12px; 
-    
-    /* Importante: Para hindi lumaki ang row height */
     line-height: 1.1; 
 }
+
 .table img {
-    display: inline-block;  /* Ginawang inline para hindi masyadong kumain ng vertical space */
-    width: 25px;            /* Pinaliit ang image */
+    display: inline-block;
+    width: 25px;
     margin-right: 5px;
     vertical-align: middle;
 }
-.table tr:last-child td {
-    border-bottom: none;
+
+.live-video-feed {
+    width: 100%;
+    height: 250px;
+    object-fit: contain;
+    background-color: #000000;
+    border-radius: 8px;
 }
 
-
-
+.detection-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
 
 
 

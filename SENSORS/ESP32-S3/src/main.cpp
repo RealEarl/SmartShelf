@@ -5,8 +5,8 @@
 #include <HTTPClient.h>
 
 // Replace with your actual network details
-const char* ssid = "DITO_500BD_2.4";
-const char* password = "Jailot@1028";
+const char* ssid = "ANGELFIRE";
+const char* password = "16089339";
 
 // Replace 192.168.1.15 with your laptop IPv4 address
 const char* serverName = "http://192.168.8.104:5000/sensor_endpoint";

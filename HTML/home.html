@@ -75,12 +75,14 @@
                 <img src="{{ url_for('static', filename='IMAGE/spoiled.png') }}" class="main-img">
             </div>   
         </div>
-        
+    <div class="three-div">  
         <div class="container">
             <div class="onlive">
                 <span class="live-shelf-status">Live Shelf Status</span>
                 <div class="detection-container">
                         <div class="detection-panel">
+                            <img id="videoFeed" src="" class="live-video-feed"> <!-- change src depending on the py file being used -->
+
                             <div class="control-panel">
                                 <div class="control-buttons">
                                     <button id="startBtn" class="btn-control">
@@ -92,6 +94,7 @@
                                 </div>
                                 <div class="camera-selector">
                                     <select id="cameraSelect">
+                                        <option value="0">Camera 0</option>
                                         <option value="0">Camera 0</option>
                                         <option value="1">Camera 1</option>
                                     </select>
@@ -121,36 +124,43 @@
                     <th>Status</th>
                     <th>Shelf</th>
                     <th>Humidity</th>
+                    <th>Temperature</th>
+                    <th>Gas</th>
                     <th>Time</th>
                 </tr>
                 <tr>
                     <td><img src="{{ url_for('static', filename= 'IMAGE/pear-image.png') }}" width="50px">Pear</td>
-                    <td>[Status]</td>
+                    <td id="status-pear">[Status]</td>
                     <td>Shelf A</td>
-                    <td>[Humidity %]</td>
-                    <td>[Time]</td>
+                    <td id="humidity-pear">[Humidity %]</td>
+                    <td id="temp-pear">[Temp °C]</td>
+                    <td id="gas-pear">[Gas]</td>
+                    <td id="time-pear">[Time]</td>
                 </tr>
                 <tr>
                     <td><img src="{{ url_for('static', filename= 'IMAGE/avocado-image.png') }}" width="50px">Avocado</td>
-                    <td>[Status]</td>
+                    <td id="status-avocado">[Status]</td>
                     <td>Shelf B</td>
-                    <td>[Humidity %]</td>
-                    <td>[Time]</td>
+                    <td id="humidity-avocado">[Humidity %]</td>
+                    <td id="temp-avocado">[Temp °C]</td>
+                    <td id="gas-avocado">[Gas]</td>
+                    <td id="time-avocado">[Time]</td>
                 </tr>
                 <tr>
                     <td><img src="{{ url_for('static', filename= 'IMAGE/mangosteen-image.png') }}" width="50px">Mangosteen</td>
-                    <td>[Status]</td>
+                    <td id="status-mangosteen">[Status]</td>
                     <td>Shelf C</td>
-                    <td>[Humidity %]</td>
-                    <td>[Time]</td>
+                    <td id="humidity-mangosteen">[Humidity %]</td>
+                    <td id="temp-mangosteen">[Temp °C]</td>
+                    <td id="gas-mangosteen">[Gas]</td>
+                    <td id="time-mangosteen">[Time]</td>
                 </tr>
             </table>
         </div>
-        
+    </div>
     </main>
 
-    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='JS/home.js') }}"></script>
 </body>
-
 </html>
