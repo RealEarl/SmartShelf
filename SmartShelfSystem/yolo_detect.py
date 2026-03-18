@@ -39,7 +39,7 @@ if (not os.path.exists(model_path)):
     print('ERROR: Model path is invalid or model was not found. Make sure the model filename was entered correctly.')
     sys.exit(0)
 
-# Load the model into memory and get labemap
+# Load the model into memory and get labelmap
 model = YOLO(model_path, task='detect')
 labels = model.names
 

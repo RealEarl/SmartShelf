@@ -1,6 +1,5 @@
 import cv2
 import threading
-import base64
 import time
 import json
 import websocket
@@ -14,40 +13,13 @@ cap = None
 detection_active = False
 detection_thread = None
 
-# Update this to your latest Ngrok WSS URL
+# PASTE YOUR LATEST NGROK WSS URL HERE
 COLAB_WS_URL = "wss://superprecise-lisha-unwelded.ngrok-free.dev"
+PHONE_CAMERA_URL = "http://192.168.137.234:8080/video"
 
-def initialize_camera(camera_index=0):
-    global cap
-    if cap is not None:
-        cap.release()
-        
-    try:
-        cap = cv2.VideoCapture(camera_index)
-        # Minimize the internal buffer size to prevent lag
-        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-        
-        if not cap.isOpened():
-            if camera_index == 1:
-                print("Camera 0 failed, trying Camera 1")
-                cap = cv2.VideoCapture(1)
-                cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-                if not cap.isOpened():
-                    return False
-            else:
-                return False
-        
-        cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-        cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-        cap.set(cv2.CAP_PROP_FPS, 15)
-        return True
-    except Exception as e:
-        print(f"Camera Error {e}")
-        return False
-
-def process_frames():
+def background_analysis():
     global cap, detection_active
-    print(">>> DETECTION LOOP ACTIVATED")
+    print(">>> BACKGROUND THREAD ACTIVATED")
     
     ws = websocket.WebSocket()
     try:
@@ -63,53 +35,50 @@ def process_frames():
             continue
             
         # Flush the buffer to get the real time frame
-        for _ in range(3):
+        for _ in range(5):
             cap.grab()
             
         ret, frame = cap.read()
         if not ret:
-            print("Failed to read frame")
             time.sleep(0.5)
             continue
-        
-        # Optimize resolution for the Colab transfer
+            
+        # Resize and compress the image for fast transmission
         frame_resized = cv2.resize(frame, (640, 480))
-        _, buffer_colab = cv2.imencode('.jpg', frame_resized, [cv2.IMWRITE_JPEG_QUALITY, 85])
+        _, buffer = cv2.imencode('.jpg', frame_resized, [cv2.IMWRITE_JPEG_QUALITY, 85])
         
-        colab_data = {}
         try:
-            # Send the raw binary bytes directly to the cloud
-            ws.send(buffer_colab.tobytes(), opcode=websocket.ABNF.OPCODE_BINARY)
+            # Send the raw binary bytes
+            ws.send(buffer.tobytes(), opcode=websocket.ABNF.OPCODE_BINARY)
             
             response = ws.recv()
             colab_data = json.loads(response)
+            
+            socketio.emit('detection_data', colab_data)
+            print(f">>> SENT TO DASHBOARD {colab_data}")
+            
         except Exception as e:
             print(f">>> NETWORK ERROR DURING LOOP {e}")
             break
-        
-        # Compress the image for the local web dashboard video player
-        _, buffer_web = cv2.imencode('.jpg', frame_resized, [cv2.IMWRITE_JPEG_QUALITY, 70])
-        frame_base64 = base64.b64encode(buffer_web).decode('utf-8')
-        
-        detection_info = {
-            'frame': frame_base64,
-            'total': colab_data.get('total', 0),
-            'labels': colab_data.get('labels', {}),
-            'fps': 0
-        }
-        
-        inference_ms = colab_data.get('inference_ms', 0)
-        if inference_ms > 0:
-            detection_info['fps'] = round(1000 / inference_ms, 1)
-        
-        socketio.emit('detection_data', detection_info)
-        
-        # Added a sleep timer to reduce laptop CPU usage
+            
         time.sleep(0.5)
-
+        
     ws.close()
     if cap: cap.release()
-    print(">>> DETECTION LOOP SHUTTING DOWN")
+    print(">>> BACKGROUND THREAD SHUTTING DOWN")
+
+def initialize_camera():
+    global cap
+    if cap is not None:
+        cap.release()
+    try:
+        cap = cv2.VideoCapture(PHONE_CAMERA_URL)
+        # Minimize the internal buffer size
+        cap.set(cv2.CAP_PROP_BUFFERSIZE, 1)
+        return cap.isOpened()
+    except Exception as e:
+        print(f"Camera Error {e}")
+        return False
 
 @app.route('/')
 def login():
@@ -148,17 +117,17 @@ def handle_connect():
 @socketio.on('start_detection')
 def start_detection(data):
     global detection_active, detection_thread
+    print(">>> WEB COMMAND START DETECTION RECEIVED")
     if detection_active: return
     
-    idx = int(data.get('camera_index', 0))
-    if initialize_camera(idx):
+    if initialize_camera():
         detection_active = True
-        detection_thread = threading.Thread(target=process_frames)
+        detection_thread = threading.Thread(target=background_analysis)
         detection_thread.daemon = True
         detection_thread.start()
         print("Detection Started")
     else:
-        emit('error', {'message': 'Could not open camera'})
+        emit('error', {'message': 'Could not connect to phone stream'})
 
 @socketio.on('stop_detection')
 def stop_detection():
@@ -166,24 +135,16 @@ def stop_detection():
     detection_active = False
     print("Stopping")
 
-@socketio.on('switch_camera')
-def switch_camera(data):
-    global detection_active
-    detection_active = False 
-    time.sleep(0.5) 
-    start_detection(data)
-
-@socketio.on('list_cameras')
-def list_cameras():
-    available = []
-    for i in range(2):
-        temp = cv2.VideoCapture(i)
-        if temp.isOpened():
-            available.append(i)
-            temp.release()
-    emit('cameras_list', {'cameras': available})
-
 if __name__ == '__main__':
+    import sys
+    import os
+    try:
+        import websocket
+        print(f"websocket-client location: {websocket.__file__}")
+    except Exception as e:
+        print(f"websocket-client not found: {e}")
+    print(f"Python executable: {sys.executable}")
+    print(f"Python version: {sys.version}")
+    print(f"Current working directory: {os.getcwd()}")
     print("SMARTSHELF SERVER RUNNING")
-    print("Go to http://localhost:5000")
     socketio.run(app, host='0.0.0.0', port=5000, debug=True, allow_unsafe_werkzeug=True)
