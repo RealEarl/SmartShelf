@@ -127,6 +127,10 @@ def reports():
 def shelves():
     return render_template('shelves.html')
 
+@app.route('/settings.html')
+def settings():
+    return render_template('settings.html')
+
 @app.route('/sensor_endpoint', methods=['POST'])
 def receive_sensor_data():
     data = request.json
