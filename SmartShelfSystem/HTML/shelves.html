@@ -15,11 +15,13 @@
                     <img src="{{ url_for('static', filename='Icons/arrow-left.svg') }}">
                 </button>
             </li>
-            <div class="main-dash">
+        <div class="main-dash">
+
+            <div class="nav-links">
                 <li >
                     <a href="home.html">
                         <img src="{{ url_for('static', filename='Icons/dashboard.svg') }}">
-                        <span>Dashboard</span>
+                        <span class="pang-hover">Dashboard</span>
                     </a>
                 </li>
                 <li class="active">
@@ -31,16 +33,24 @@
                 <li>
                     <a href="reports.html">
                         <img src="{{ url_for('static', filename='Icons/reports.svg') }}">
-                        <span>Reports</span>
+                        <span class="pang-hover">Reports</span>
                     </a>
                 </li>
                 <li>
                     <a href="settings.html">
                         <img src="{{ url_for('static', filename='Icons/settings.svg') }}">
-                        <span>Settings</span>
+                        <span class="pang-hover">Settings</span>
                     </a>
                 </li>
             </div>
+
+                <div class="logout">
+                    <span class="signout">Sign Out</span>
+                    <button class="logout-btn" id="logout-btn">
+                        <img src="{{ url_for('static', filename='Icons/logout.png') }}">
+                    </button>
+                </div>
+        </div>
         </ul>
     </nav>
 
@@ -94,13 +104,16 @@
              
         </div>
 
-         <div class="livestream">
+         <div class="livestream" id="livestream">
             <h1>Livestream</h1> 
-            <div class="online"> 
+            <div class="online" id="online"> 
             </div>  
         </div>
 
        
     </main>   
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <script type="module" src="{{ url_for('static', filename='JS/shelves.js') }}"></script>
 </body>
 </html>

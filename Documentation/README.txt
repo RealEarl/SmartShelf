@@ -1,0 +1,1 @@
+smartshelf_tester should be used using a google colab gpu or any cloud gpu

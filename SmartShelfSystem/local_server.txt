@@ -1,1 +1,0 @@
-run in terminal "pip install websocket-client"

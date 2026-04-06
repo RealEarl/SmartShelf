@@ -21,7 +21,8 @@ body {
     min-height: 100vh;
     margin: 0;
     background: var(--base-clr);
-    overflow-y: hidden; /* Iwas overflow sa gilid */
+    overflow-x: hidden; /* Iwas overflow sa gilid */
+    align-items: stretch;
 }
 .name{
     width: 200px;
@@ -101,151 +102,161 @@ body {
 }
 .main-dash{
     width: 200px;
-    height: 410px; 
+  
     border-radius: 20px;
     padding: 15px;
     box-shadow: 2px 2px 10px rgb(166, 196, 179);
     background: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
-}
-
-main{
-    margin-top: 40px;
-    margin-right:20px;
-    padding: 20px;
-    height: 100vh;
-    box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    
-}    
-
- 
-.overview-spoilage-over-time{
-    display:flex;   
+    justify-content: space-between; /* Itutulak nito ang logout sa bottom */
+    height: 75vh; /* Binigyan natin ng sapat na taas yung box para may babagsakan yung logout */
 }
-.spoilage-overtime{
-    margin-left: 20px;
-    width: 530px;
-    min-height: 180px; /* Gamitin ang min-height imbes na height lang */
-    background: white;
-    border-radius: 20px;
-    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
-    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+.menu-links {
     display: flex;
     flex-direction: column;
-    box-sizing: border-box;
+    gap: 5px; /* Agwat ng bawat menu item */
 }
-.overview {
+.logout {
+    margin-top: auto; /* Siguradong itutulak nito ang sarili nya sa pinaka-ilalim ng flex box */
     display: flex;
-    align-items: flex-end;
-    flex-direction: column;
-    /* Alisin ang padding-left: 220px at padding-top: 17px */
-    padding: 10px 0; /* Kaunting space lang sa taas at baba */
-    font-size:13px;
-    width: 800px; /* Siguraduhing sakop ang loob ng box */
-    margin-left:-430px;
-    font-weight: bold;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0; /* Optional: para may divider line */
 }
-.overview hr{
-    
-    width:200px;
-    border: 1px solid rgb(96, 95, 95);
-   
-}
-.overview ul {
-    list-style: none;
+.logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
     padding: 0;
-    margin: 0;
-}
-
-.overview li {
     display: flex;
-    justify-content: flex-start; /* Para nasa kaliwa ang text at nasa kanan ang number */
-    padding: 8px 0;
-}
-.overview span{
-    gap:0;
-    font-size: 1rem;
-    padding:0;
-}
-.freshness {
-    width: 400px;
-    min-height: 180px; /* Gamitin ang min-height imbes na height lang */
-    background: white;
-    border-radius: 20px;
-    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
-    box-shadow: 2px 2px 10px rgb(166, 196, 179);
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    
+    align-items: center;
 }
 
-.freshness span:first-child {
-    font-weight: bold;
-    font-size: 1.1rem;
-    margin-bottom: 10px;
-  
+.logout-btn img {
+    width: 20px;
+    height: auto;
 }
 
-
-.detailed-logs{
-    margin-top: 20px;
-    width: 100%;
-    min-height: 200px; /* Gamitin ang min-height imbes na height lang */
-    background: rgb(231, 223, 223);
-    border-radius: 20px;
-    padding: 20px; /* Dagdagan ang padding para maganda ang margin sa loob */
-    box-shadow: 2px 2px 10px rgb(166, 196, 179);
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-    
-}
-.detailed-logs h2{
-    margin-top:-20px;
-    font-size:14px ;
-}
-.container-log-table {
-    width: 100%;
-    height: 100%;
-    background: #ffffff;
-    border-radius: 15px;
-    padding: 10px 20px;
-    box-shadow: 2px 2px 10px rgba(166, 196, 179, 0.3);
-    box-sizing: border-box;
-}
-
-.tables {
-
-    width: 100%;
-    border-collapse: collapse; /* Para mawala ang gaps sa pagitan ng cells */
-    font-size: 12px; /* Maliit na font gaya ng request mo */
-    color: #555;
-    table-layout: auto;
-    border-collapse: collapse;
-}
-
-.tables th, .tables td {
-    margin-top: -10px;
-    text-align: left;
-    padding: 0px 8px 5px; /* Vertical spacing para sa bawat row */
-    border-bottom: 1px solid #050404; /* Manipis na linya sa pagitan ng rows */
-}
-
-/* Eto ang secret para magkadikit ang unang tatlo */
-.tables th:nth-child(1), .tables td:nth-child(1) { width: 100px; } /* Timestamp */
-.tables th:nth-child(2), .tables td:nth-child(2) { width: 80px; }  /* Shelf */
-.tables th:nth-child(3), .tables td:nth-child(3) { width: 120px; } /* Fruit */
-
-/* Ang huling column (Status) ay itutulak pakanan */
-.tables th:last-child, .tables td:last-child {
-   
-    margin-left: 20px;
-}
-
-.tables th {
-    color: #888;
+.signout {
+    font-size: 14px;
     font-weight: 600;
-    text-transform: none;
+    color: var(--text-clr);
 }
+
+/* Kapag pinaliit (collapsed) ang sidebar */
+
+#sidebar.collapsed .logout {
+    justify-content: center;
+}
+.logout-btn:hover {
+    transform: scale(1.10); /* Lalaki ng 5% */
+    transition: transform 0.1s ease-in-out; /* Para smooth ang paglaki */
+    cursor: pointer;
+    filter: invert(31%) sepia(94%) saturate(4101%) hue-rotate(221deg) brightness(101%) contrast(106%);
+}
+.pang-hover:hover{
+    transform: scale(1.10); /* Lalaki ng 5% */
+    transition: transform 0.1s ease-in-out; /* Para smooth ang paglaki */
+    color:green;
+}
+/* MAIN LAYOUT */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    margin-top: 70px; 
+    flex:1;
+    /* Siguraduhin na ganito ang tatlong lines na ito: */
+    min-height: calc(100vh - 70px); 
+    overflow-y: auto; 
+    box-sizing: border-box; 
+    
+}
+
+.content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+   
+}
+
+/* TOP CARDS */
+.overview-spoilage-over-time {
+    display: flex;
+    flex-wrap: wrap; /* 🔥 responsive magic */
+    gap: 20px;
+    width: 100%;
+}
+
+.freshness,
+.spoilage-overtime {
+    flex: 1 1 350px; /* 🔥 auto adjust */
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+}
+
+/* GRAPH CONTAINER */
+#bar-graph-container {
+    width: 100%;
+    height: 200px;
+    margin-top: 15px;
+}
+
+/* TABLE */
+.container-table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 20px;
+    background: #fff;
+
+    flex: 1 1 auto;        /* Mag-scale kasama ang parent */
+    min-height: 0;         /* Mahalaga para gumana ang flex scrolling */
+}
+
+
+/* HEADER */
+.table-header {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 15px;
+    font-weight: bold;
+}
+
+/* BODY */
+.table-body {
+    flex: 1 1 auto;        /* Table body magsi-scroll kapag lumagpas */
+    overflow-y: auto;
+}
+
+
+/* ROW */
+.table-row {
+    display: flex;
+    flex-wrap: wrap; /* 🔥 para mobile */
+    padding: 15px;
+    border-top: 1px solid #c7c1c1;
+}
+
+/* COLUMNS */
+.col-fruit,
+.col-status,
+.col-shelf,
+.col-time {
+    flex: 1 1 150px; /* 🔥 auto adjust */
+    min-width: 120px;
+    display: flex;
+    align-items: center;
+}
+
+/* IMAGE */
+.fruit-img {
+    width: 40px;
+    margin-right: 10px;
+}
+

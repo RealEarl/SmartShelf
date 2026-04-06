@@ -1,0 +1,63 @@
+#include <Arduino.h>
+#include <Wire.h>
+#include <Adafruit_SHT4x.h>
+
+// Calibration offsets
+float temp_offset = 0.0;     
+float humidity_offset = 0.0; 
+
+Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+
+const int I2C_SDA_PIN = 8;
+const int I2C_SCL_PIN = 9;
+
+const int mq3Pin = 1;
+const int mq135Pin = 2;
+
+void setup() {
+  Serial.begin(115200);
+  delay(2000); 
+
+  bool i2c_status = Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN, 100000);
+  
+  if (sht4.begin(&Wire)) {
+    sht4.setPrecision(SHT4X_HIGH_PRECISION);
+    
+    sht4.setHeater(SHT4X_HIGH_HEATER_1S);
+    sensors_event_t dummyHum, dummyTemp;
+    sht4.getEvent(&dummyHum, &dummyTemp); 
+    
+    sht4.setHeater(SHT4X_NO_HEATER); 
+  }
+  
+  // Print the Excel header row once during boot
+  Serial.println("Temperature,Humidity,MQ3,MQ135");
+}
+
+void loop() {
+  sensors_event_t humidity, temp;
+  String tempStr = "ERR";
+  String humStr = "ERR";
+  
+  if (sht4.getEvent(&humidity, &temp)) {
+    float final_temp = temp.temperature + temp_offset;
+    float final_hum = humidity.relative_humidity + humidity_offset;
+
+    tempStr = String(final_temp, 2);
+    humStr = String(final_hum, 2);
+  } 
+
+  int mq3Value = analogRead(mq3Pin);
+  int mq135Value = analogRead(mq135Pin);
+
+  // Send comma separated values directly to the serial port
+  Serial.print(tempStr);
+  Serial.print(",");
+  Serial.print(humStr);
+  Serial.print(",");
+  Serial.print(mq3Value);
+  Serial.print(",");
+  Serial.println(mq135Value);
+
+  delay(2000);
+}

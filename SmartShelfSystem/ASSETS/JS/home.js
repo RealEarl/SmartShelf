@@ -1,51 +1,38 @@
+// HOME PAGE JS - CAMERA & LOGOUT ONLY
+import { auth, database } from "../AUTH/firebaseAuth.js";
+import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
+import { ref, update, onDisconnect } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+
 document.addEventListener('DOMContentLoaded', function() {
     const socket = io();
     let isDetectionRunning = false;
 
-    const sidebar = document.getElementById('sidebar');
-    const toggleBtn = document.getElementById('toggle-btn');
-    
-    if (sidebar && toggleBtn) {
-        toggleBtn.addEventListener('click', function() {
-            sidebar.classList.toggle('collapsed');
-            const isCollapsed = sidebar.classList.contains('collapsed');
-            localStorage.setItem('sidebar-collapsed', isCollapsed);
-        });
-
-        const savedState = localStorage.getItem('sidebar-collapsed');
-        if (savedState === 'true') {
-            sidebar.classList.add('collapsed');
+    // Presence System
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            const userRef = ref(database, 'users/' + user.uid);
+            const phTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
+            onDisconnect(userRef).update({ status: "offline", last_logout: phTime });
         }
-    }
+    });
 
+    // Sidebar Active State Logic
     const currentPage = window.location.pathname.split("/").pop();
     const navItems = document.querySelectorAll('#sidebar ul li');
-
     navItems.forEach(item => {
         const link = item.querySelector('a');
-        if (link) {
-            const href = link.getAttribute('href');
-            if (href === currentPage || (currentPage === '' && href === 'index.html')) {
-                navItems.forEach(nav => nav.classList.remove('active'));
-                item.classList.add('active');
-            }
+        if (link && (link.getAttribute('href') === currentPage || (currentPage === '' && link.getAttribute('href') === 'index.html'))) {
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
         }
     });
 
-    const expandButtons = document.querySelectorAll('.btn-down');
-    expandButtons.forEach(btn => {
-        btn.addEventListener('click', function(e) {
-            e.stopPropagation(); 
-            this.classList.toggle('active');
-        });
-    });
-
+    // Camera Controls
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const cameraSelect = document.getElementById('cameraSelect');
     const loadingSpinner = document.getElementById('loadingSpinner');
 
-    // INSTANTLY LOAD CAMERA OPTIONS
     if (cameraSelect) {
         cameraSelect.innerHTML = `
             <option value="phone">Phone Camera (IP)</option>
@@ -57,22 +44,13 @@ document.addEventListener('DOMContentLoaded', function() {
     if (startBtn) {
         startBtn.addEventListener('click', function() {
             const cameraValue = cameraSelect.value;
-            
             socket.emit('start_detection', { camera_index: cameraValue });
             isDetectionRunning = true;
-            
             this.disabled = true;
             if (stopBtn) stopBtn.disabled = false;
             if (loadingSpinner) loadingSpinner.style.display = 'flex';
-            
             const frame = document.getElementById('videoFeed');
-            if (frame) {
-                if (cameraValue === 'phone') {
-                    frame.src = 'http://192.168.137.234:8080/video';
-                } else {
-                    frame.src = ''; // Clear for USB base64 injection
-                }
-            }
+            if (frame && cameraValue === 'phone') frame.src = 'http://192.168.137.234:8080/video';
         });
     }
 
@@ -80,112 +58,61 @@ document.addEventListener('DOMContentLoaded', function() {
         stopBtn.addEventListener('click', function() {
             socket.emit('stop_detection');
             isDetectionRunning = false;
-            
             this.disabled = true;
             if (startBtn) startBtn.disabled = false;
             if (loadingSpinner) loadingSpinner.style.display = 'none';
-            
             const frame = document.getElementById('videoFeed');
-            if (frame) {
-                frame.src = '';
-            }
-            
+            if (frame) frame.src = '';
             resetDashboardCounts();
         });
     }
 
-    if (cameraSelect) {
-        cameraSelect.addEventListener('change', function() {
-            if (isDetectionRunning) {
-                socket.emit('stop_detection');
-                setTimeout(() => {
-                    const cameraValue = this.value;
-                    socket.emit('start_detection', { camera_index: cameraValue });
-                }, 500);
+    // Detection Data (Cards Update Only)
+    socket.on('detection_data', function(data) {
+        if (loadingSpinner) loadingSpinner.style.display = 'none';
+        if (data.frame && cameraSelect.value !== 'phone') {
+            const frameEl = document.getElementById('videoFeed');
+            if (frameEl) frameEl.src = "data:image/jpeg;base64," + data.frame;
+        }
+        // Dashboard Summary Cards Update
+        if(document.getElementById('freshCount')) document.getElementById('freshCount').textContent = data.labels['Fresh'] || 0;
+        if(document.getElementById('spoiledCount')) document.getElementById('spoiledCount').textContent = data.labels['Spoiled'] || 0;
+    });
+
+    function resetDashboardCounts() {
+        if(document.getElementById('freshCount')) document.getElementById('freshCount').textContent = '0';
+        if(document.getElementById('spoiledCount')) document.getElementById('spoiledCount').textContent = '0';
+    }
+
+    // Logout Logic (Exactly mirrored with Reports)
+    const logoutBtn = document.getElementById('logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', async function (e) {
+            e.preventDefault();
+            if (confirm("Are you sure you want to logout?")) {
+                try {
+                    const user = auth.currentUser;
+                    if (user) {
+                        const userRef = ref(database, 'users/' + user.uid);
+                        const phTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
+                        console.log("Updating status to offline...");
+                        await update(userRef, { status: "offline", last_logout: phTime });
+                        console.log("Database updated!");
+                    }
+                    await signOut(auth);
+                    localStorage.clear();
+                    sessionStorage.clear();
+                    console.log("Redirecting...");
+                    window.location.href = '/';
+                } catch (error) {
+                    console.error("Logout Error:", error);
+                    window.location.href = '/';
+                }
             }
         });
     }
 
     socket.on('connect', function() {
-        console.log("Connected to Flask Server");
-        // Removed the slow socket.emit('list_cameras') request
-    });
-
-    socket.on('detection_data', function(data) {
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
-
-        if (data.frame && cameraSelect.value !== 'phone') {
-            const frameEl = document.getElementById('videoFeed');
-            if (frameEl) {
-                frameEl.src = "data:image/jpeg;base64," + data.frame;
-            }
-        }
-
-        const totalCard = document.querySelector('.total-fruits .status-wrapper .status'); 
-        if (totalCard) {
-            totalCard.innerHTML = `Total Fruits <br> <span style="font-size: 1.5em; color: #065e20;">${data.total}</span>`;
-        }
-
-        const freshCard = document.querySelector('.fresh .status-wrapper .status');
-        if (freshCard && data.labels) {
-            const mainLabel = Object.keys(data.labels)[0] || "None";
-            freshCard.innerHTML = `Fresh <br> <span style="font-size: 1.2em; color: #065e20;">${mainLabel}</span>`;
-        }
-
-        const spoiledCard = document.querySelector('.spoiled .status');
-        if (spoiledCard && data.labels) {
-             const spoiledCount = data.labels['Spoiled'] || 0;
-             spoiledCard.innerHTML = `Spoiled <br> <span style="font-size: 1.5em; color: red;">${spoiledCount}</span>`;
-        }
-
-        const freshCountEl = document.getElementById('freshCount');
-        if(freshCountEl) freshCountEl.textContent = data.labels['Fresh'] || 0;
-        
-        const spoiledCountEl = document.getElementById('spoiledCount');
-        if(spoiledCountEl) spoiledCountEl.textContent = data.labels['Spoiled'] || 0;
-
-        const attentionCountEl = document.getElementById('attentionCount');
-        if(attentionCountEl) attentionCountEl.textContent = data.labels['Needs Attention'] || data.labels['Attention'] || 0; 
-    });
-
-    socket.on('sensor_data', function(data) {
-        const fruits = ["pear", "avocado", "mangosteen"];
-        fruits.forEach(function(fruit) {
-            const hum = document.getElementById("humidity-" + fruit);
-            if (hum) hum.innerText = data.HUM ? data.HUM + "%" : "0%";
-            
-            const temp = document.getElementById("temp-" + fruit);
-            if (temp) temp.innerText = data.TEMP ? data.TEMP + "°C" : "0°C";
-            
-            const gas = document.getElementById("gas-" + fruit);
-            if (gas) gas.innerText = (data.MQ3 && data.MQ135) ? `MQ3: ${data.MQ3}, MQ135: ${data.MQ135}` : "0";
-            
-            const time = document.getElementById("time-" + fruit);
-            if (time) time.innerText = new Date().toLocaleTimeString();
-            
-            const status = document.getElementById("status-" + fruit);
-            if (status) status.innerText = (data.HUM && data.TEMP) ? "Active" : "Waiting";
-        });
-    });
-
-    socket.on('error', function(data) {
-        console.error('Socket Error:', data);
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
-        if (startBtn) startBtn.disabled = false;
-    });
-
-    function resetDashboardCounts() {
-        const totalCard = document.querySelector('.total-fruits .status-wrapper .status');
-        if (totalCard) totalCard.innerHTML = `Total Fruits`;
-
-        const freshCard = document.querySelector('.fresh .status-wrapper .status');
-        if (freshCard) freshCard.innerHTML = `Fresh`;
-        
-        const spoiledCard = document.querySelector('.spoiled .status');
-        if (spoiledCard) spoiledCard.innerHTML = `Spoiled`;
-
-        if(document.getElementById('freshCount')) document.getElementById('freshCount').textContent = '0';
-        if(document.getElementById('spoiledCount')) document.getElementById('spoiledCount').textContent = '0';
-        if(document.getElementById('attentionCount')) document.getElementById('attentionCount').textContent = '0';
-    }
+    console.log("Connected to Flask Server (Home)");
+});
 });

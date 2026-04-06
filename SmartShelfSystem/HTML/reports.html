@@ -15,17 +15,18 @@
                     <img src="{{ url_for('static', filename='Icons/arrow-left.svg') }}">
                 </button>
             </li>
-            <div class="main-dash">
+    <div class="main-dash">
+            <div class="nav-links">
                 <li >
                     <a href="home.html">
                         <img src="{{ url_for('static', filename='Icons/dashboard.svg') }}">
-                        <span>Dashboard</span>
+                        <span class="pang-hover">Dashboard</span>
                     </a>
                 </li>
                 <li>
                     <a href="shelves.html">
                         <img src="{{ url_for('static', filename='Icons/shelves.svg') }}">
-                        <span>Shelves</span>
+                        <span class="pang-hover">Shelves</span>
                     </a>
                 </li>
                 <li class="active">
@@ -37,51 +38,87 @@
                 <li>
                     <a href="settings.html">
                         <img src="{{ url_for('static', filename='Icons/settings.svg') }}">
-                        <span>Settings</span>
+                        <span class="pang-hover">Settings</span>
                     </a>
                 </li>
+            </div>
+
+                <div class="logout">
+                    <span class="signout">Sign Out</span>
+                    <button class="logout-btn" id="logout-btn">
+                        <img src="{{ url_for('static', filename='Icons/logout.png') }}">
+                    </button>
+                </div>
             </div>
         </ul>
     </nav>
 
-    <main>
+     <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="content-wrapper">
 
-        <div class="overview-spoilage-over-time">
-            <div class="freshness">
-                <span>Freshness Overview</span>
-                <div class="overview">
-                    <ul>
-                        <li>Fresh: <span id="freshCount">0</span></li>
-                        <hr>
-                        <li>Need Attention: <span id="attentionCount">0</span></li>
-                        <hr>
-                        <li>Spoiled: <span id="spoiledCount">0</span></li><hr>
-                    </ul>
+            <!-- TOP SECTION -->
+            <div class="overview-spoilage-over-time">
+                <div class="freshness">
+                    <span>Freshness Overview</span>
+                    <div class="overview">
+                        <ul>
+                            <li>Fresh: <span id="freshCount">0</span></li>
+                            <hr>
+                            <li>Need Attention: <span id="attentionCount">0</span></li>
+                            <hr>
+                            <li>Spoiled: <span id="spoiledCount">0</span></li>
+                            <hr>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="spoilage-overtime">
+                    <span>Spoilage Overtime</span>
+
+                    <!-- 🔥 BAR GRAPH CONTAINER -->
+                    <div id="bar-graph-container">
+                        <!-- dito mo ilalagay chart (Chart.js or canvas or div bars) -->
+                    </div>
+
                 </div>
             </div>
 
-            <div class="spoilage-overtime">
-                <span>Spoilage Overtime</span>
-            </div>
-        </div>
+            <!-- TABLE -->
+            <div class="container-table">
+                <div class="table-header">
+                    <div class="col-fruit">Fruit</div>
+                    <div class="col-status">Status</div>
+                    
+                    <div class="col-time">Time</div>
+                </div>
 
-        
-        <div class="detailed-logs">
-            <h2>Detailed Logs</h2>
+                <div class="table-body">
+                    <div class="table-row">
+                        <div class="col-fruit">
+                            <img src="{{ url_for('static', filename='IMAGE/pear-image.png') }}" class="fruit-img">
+                            <span>Pear</span>
+                        </div>
+                        <div class="col-status" id="status-pear">[Status]</div>
+                       
+                        <div class="col-time" id="time-pear">[Time]</div>
+                    </div>
 
-            <div class="container-log-table">
-                <table class="tables">
-                <tr>
-                    <th>Timestamp</th>
-                    <th>Shelf</th>
-                    <th>Fruit</th>
-                    <th><strong>Status</strong></th>
-                </tr>
-            </table>
+                    <div class="table-row">
+                        <div class="col-fruit">
+                            <img src="{{ url_for('static', filename='IMAGE/avocado-image.png') }}" class="fruit-img">
+                            <span>Avocado</span>
+                        </div>
+                        <div class="col-status" id="status-avocado">[Status]</div>
+                       
+                        <div class="col-time" id="time-avocado">[Time]</div>
+                    </div>
+                </div>
             </div>
-            
+
         </div>
     </main>
-    
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+<script type="module" src="{{ url_for('static', filename='JS/reports.js') }}"></script>
 </body>
 </html>

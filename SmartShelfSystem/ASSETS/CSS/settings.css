@@ -1,0 +1,162 @@
+:root{
+    --base-clr: linear-gradient(to right, #82be9d, #b2d8a6af);
+    --line-clr: #065e20;
+    --hover-clr:rgb(0, 0, 0);
+    --text-clr:rgb(0, 0, 0);
+    --accent-clr:#2602b8;
+    --secondary-text-clr: grey;
+  
+}
+*{
+    margin: 0;
+    padding: 0;
+} 
+
+html{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    line-height: 24px;
+}
+body {
+    display: flex; /* Gawing Flexbox ang buong page */
+    min-height: 100vh;
+    margin: 0;
+    background: var(--base-clr);
+    overflow-y: hidden; /* Iwas overflow sa gilid */
+}
+.name{
+    width: 200px;
+    height: 30px; /* Ito lang ang ginawa nating rectangle */
+    border-radius: 20px 50px 10px 20px  ;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    display: flex;  
+    margin-top: 12px;
+    background: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
+}
+#sidebar{
+    
+    width: 250px;       /* Fixed width para sa sidebar */
+    flex-shrink: 0;     /* Bawal siyang lumiit kahit masikip ang screen */
+    height: 100vh;
+    position: sticky;   /* Mananatili sa gilid habang nag-sscroll ang main */
+    top: 0;
+    box-sizing: border-box;
+    margin-left: 20px;
+
+    border-radius: 10px 0px 2px rgb(3, 63, 8)
+}
+
+#sidebar li{
+    list-style: none;
+
+}
+
+#sidebar ul li.active a{
+    color: var(--accent-clr)
+}
+
+
+#sidebar > ul > li.name {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 0;                      
+    margin-bottom: 16px;
+    padding-left: 10px;          
+}
+
+#sidebar .name h1 {
+    padding: 0.85em 0.1em 0.85em 0.85em; /* Pinaliit ang 0.1em sa kanan */
+    margin: 0;
+    font-size: 1.5rem; 
+               
+}
+
+/* 3. Siguraduhing walang extra space ang toggle button */
+#toggle-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+
+#toggle-btn img {
+    width: 25px; /* Adjust mo ang laki ng icon dito */
+    height: auto;
+}
+
+#sidebar a,
+#sidebar .name h1{
+    border-radius: .5em;
+    padding: .85em;
+    text-decoration: none;
+    color:var(--text-clr);
+    display: flex;
+    align-items: center;
+    gap: 0.1em;
+       
+}
+.main-dash{
+    width: 200px;
+  
+    border-radius: 20px;
+    padding: 15px;
+    box-shadow: 2px 2px 10px rgb(166, 196, 179);
+    background: linear-gradient(to right, #ffffff, #ffffff, #ffffff);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Itutulak nito ang logout sa bottom */
+    height: 75vh; /* Binigyan natin ng sapat na taas yung box para may babagsakan yung logout */
+}
+.menu-links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Agwat ng bawat menu item */
+}
+.logout {
+    margin-top: auto; /* Siguradong itutulak nito ang sarili nya sa pinaka-ilalim ng flex box */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    border-top: 1px solid #f0f0f0; /* Optional: para may divider line */
+}
+.logout-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+}
+
+.logout-btn img {
+    width: 20px;
+    height: auto;
+}
+
+.signout {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-clr);
+}
+
+/* Kapag pinaliit (collapsed) ang sidebar */
+
+#sidebar.collapsed .logout {
+    justify-content: center;
+}
+.logout-btn:hover {
+    transform: scale(1.10); /* Lalaki ng 5% */
+    transition: transform 0.1s ease-in-out; /* Para smooth ang paglaki */
+    cursor: pointer;
+    filter: invert(31%) sepia(94%) saturate(4101%) hue-rotate(221deg) brightness(101%) contrast(106%);
+}
+.pang-hover:hover{
+    transform: scale(1.10); /* Lalaki ng 5% */
+    transition: transform 0.1s ease-in-out; /* Para smooth ang paglaki */
+    color:green;
+}

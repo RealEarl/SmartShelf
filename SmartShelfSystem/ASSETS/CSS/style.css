@@ -110,6 +110,22 @@ body{
     display:flex;
 }
 
+.google-login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.btn-google-btn{
+    display: flex;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    text-decoration: underline;
+}
+.btn-google-btn:hover{
+    color: blue;
+}
+
 
 
 

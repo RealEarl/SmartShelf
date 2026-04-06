@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/settings.css') }}">
+    <title>Document</title>
+</head>
+<body>
+     <nav id="sidebar">
+        <ul>
+            <li class="name">
+                <h1 class="name-logo">Smart<span>SHELF</span></h1>
+                <button id="toggle-btn">
+                    <img src="{{ url_for('static', filename='Icons/arrow-left.svg') }}">
+                </button>
+            </li>
+            <div class="main-dash">
+                <div class="nav-links">
+                <li>
+                    <a href="home.html">
+                        <img src="{{ url_for('static', filename='Icons/dashboard.svg') }}">
+                        <span class="pang-hover">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="shelves.html">
+                        <img src="{{ url_for('static', filename='Icons/shelves.svg') }}">
+                        <span class="pang-hover">Shelves</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="reports.html">
+                        <img src="{{ url_for('static', filename='Icons/reports.svg') }}">
+                        <span class="pang-hover">Reports</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="settings.html">
+                        <img src="{{ url_for('static', filename='Icons/settings.svg') }}">
+                        <span>Settings</span>
+                    </a>
+                </li>
+              </div>  
+                <div class="logout">
+                    <span class="signout">Sign Out</span>
+                    <button class="logout-btn" id="logout-btn">
+                        <img src="{{ url_for('static', filename='Icons/logout.png') }}">
+                    </button>
+                </div>
+            </div>
+        </ul>
+
+    
+    </nav>
+
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+    <script type="module" src="{{ url_for('static', filename='JS/settings.js') }}"></script>
+</body>
+</html>
