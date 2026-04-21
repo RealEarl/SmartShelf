@@ -1,0 +1,52 @@
+/*
+  OPTIONAL: PROGRAM HEADER "ENCLOSED WITH MULTIPLE-LINE COMMENT"
+*/
+
+//  PREPROCESSOR DIRECTIVES
+#include <header-file.h> 
+#include "header-file.h"
+
+#define MACRO_CONSTANT    (value ex. 13)
+#define MACRO_EXPRESSION  (expression ex. (x + 1))
+#define MACRO_FUNCTION    (function-calls ex. delay(1000))
+
+//  OPTIONAL FUNCTION PROTOTYPE / DECLARATION
+return-type function-Name (parameter-list);
+
+//  GLOBAL SCOPE VARIABLE / OBJECT DECLARATION
+modifier data-type identifier_name = with or without value;
+ex. signed int car_counter;
+ex. const float PI = 3.14159;
+ex. static unsigned short int car_count = MAX_CNT;
+
+object-type object_name = with or without value;
+ex. Servo myServo;
+ex. Adafruit_SHT4x sht4 = Adafruit_SHT4x();
+ex. LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+
+//  "MANDATORY" SETUP() FUNCTION
+void setup()
+{
+// all pin port configuration should be done here
+ex. pinMode(LED, OUTPUT);
+ex. pinMode(BUTTON, INPUT_PULLUP);
+ex. Serial.begin(9600);
+ex. Serial.begin(SER_BAUD_RATE);
+ex. myServo.attach(9);
+ex. myLCD.begin(COL, ROW);
+}
+
+//  "MANDATORY" LOOP() FUNCTION
+void loop()
+{
+  data-type identifier-name = value; // local variable scope/declaration
+  // all code that needs to be executed repeatedly should be placed here
+}
+
+//  USER'S / PROGRAMMER'S DEFINED FUNCTION
+
+return-type function-name (parameter-list)
+{
+  data-type identifier-name = value; // local variable scope/declaration
+  // function code goes here
+}

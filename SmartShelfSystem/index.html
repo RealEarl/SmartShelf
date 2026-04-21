@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartShelf | Intelligent Monitoring System</title>
+  
+  <link rel="stylesheet" href="ASSETS/CSS/style.css">
+  
+  
+</head>
+<body>
+    <div class="wrapper">
+      <form id="loginForm">
+        <h1>SmartShelf</h1>
+        <h2>Login</h2>
+
+        <div class="input-box">
+            <input type="email" id="email" placeholder="Email" required> 
+            <img src="ASSETS/IMAGE/person-icon.svg" alt="user icon">
+        </div>
+
+        <div class="input-box">
+            <input type="password" id="password" placeholder="Password" required> 
+            <img src="ASSETS/IMAGE/lock-icon.svg" alt="lock icon">
+        </div>
+
+        <div class="remember-forgot">
+          <label><input type="checkbox" id="showpassword">Show Password</label>
+          <label><input type="checkbox" id="rememberMe">Remember Me</label>
+        </div>
+
+        
+        
+        <div class="create-container">
+          <button type="submit" class="btn" id="loginBtn">Login</button>
+          <button type="submit" class="btn" id="createBtn">Create</button>
+        </div>
+      </form>
+      
+      <div class="google-login-container">
+          <button type="button" id="googleLoginBtn" class="btn-google-btn">
+            Sign in with Google
+          </button>
+      </div>
+    </div>
+
+<script type="module" src="ASSETS/JS/login.js"></script>
+
+</body>
+</html>

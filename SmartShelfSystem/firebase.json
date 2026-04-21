@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "target": "main",
+    "public": ".",
+    "cleanUrls": true,
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "**/*.bat",
+      "**/*.exe",
+      "**/*.py",
+      "**/*.pt",
+      "**/*.engine",
+      "**/*.ipynb",
+      "serviceAccountKey.json",
+      "SENSORS/**"
+    ]
+  }
+}

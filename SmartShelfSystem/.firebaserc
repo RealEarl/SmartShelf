@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "gui-hosting"
+  },
+  "targets": {
+    "gui-hosting": {
+      "hosting": {
+        "main": [
+          "smartshelf-monitoring"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

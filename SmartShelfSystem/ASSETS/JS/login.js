@@ -9,7 +9,7 @@ import {
 
 // IMPORT PARA SA DATABASE FUNCTIONS
 import { ref, set, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
-
+//try git commit
 document.addEventListener('DOMContentLoaded', () => {
     const loginBtn = document.getElementById('loginBtn');
     const createBtn = document.getElementById('createBtn');

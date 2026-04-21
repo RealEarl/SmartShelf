@@ -6,11 +6,11 @@
 #include <WiFiClientSecure.h>
 
 // Replace with your actual network details
-const char* ssid = "ANGELFIRE";
+const char* ssid = "DITO_KA 2.4";
 const char* password = "16089339";
 
 // Replace 192.168.1.15 with your laptop IPv4 address
-const char* serverName = "http://192.168.8.104:5000/sensor_endpoint";
+const char* serverName = "http://192.168.8.1:5000/sensor_endpoint";
 
 // Replace with your Google Apps Script Web App URL
 const char* googleScriptUrl = "https://script.google.com/macros/s/AKfycbzzAU03s4A4DNS6_DcAdjOP2pm1FIfy_mktpzvpLb9BRANx4StdkEC7k-5eVo3j2_HG/exec";
@@ -121,5 +121,5 @@ void loop() {
     Serial.println("WiFi Disconnected");
   }
 
-  delay(2000);
+  delay(60000);
 }

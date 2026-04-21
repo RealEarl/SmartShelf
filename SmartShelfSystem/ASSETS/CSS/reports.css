@@ -260,3 +260,39 @@ body {
     margin-right: 10px;
 }
 
+/* Container para sa Pie Chart */
+.chart-container {
+    position: relative;
+    margin: auto;
+    height: 180px; /* Eksaktong taas ng bilog */
+    width: 180px;  /* Eksaktong lapad ng bilog */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Siguraduhin na ang canvas ay susunod sa container */
+#freshnessChart {
+    max-width: 100%;
+    max-height: 100%;
+    display: block;
+}
+
+/* Ayos ng Flexbox sa Overview para magkatabi ang bilog at listahan */
+.overview {
+    display: flex;
+    flex-direction: row; /* Para magkatabi horizontally */
+    align-items: center;
+    justify-content: space-around;
+    gap: 20px;
+    padding: 10px;
+}
+
+/* Para sa mobile view, pagtapatin sila vertical */
+@media (max-width: 600px) {
+    .overview {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+

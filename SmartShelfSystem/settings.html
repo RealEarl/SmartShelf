@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="ASSETS/CSS/settings.css">
+    <title>SmartShelf | Intelligent Monitoring System</title>
+</head>
+<body>
+     <nav id="sidebar">
+        <ul>
+            <li class="name">
+                <h1 class="name-logo">Smart<span>SHELF</span></h1>
+                <button id="toggle-btn">
+                    <img src="ASSETS/ICONS/arrow-left.svg">
+                </button>
+            </li>
+            <div class="main-dash">
+                <div class="nav-links">
+                <li>
+                    <a href="home.html">
+                        <img src="ASSETS/ICONS/dashboard.svg">
+                        <span class="pang-hover">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="shelves.html">
+                        <img src="ASSETS/ICONS/shelves.svg">
+                        <span class="pang-hover">Shelves</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="reports.html">
+                        <img src="ASSETS/ICONS/reports.svg">
+                        <span class="pang-hover">Reports</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="settings.html">
+                        <img src="ASSETS/ICONS/settings.svg">
+                        <span>Settings</span>
+                    </a>
+                </li>
+              </div>  
+                <div class="logout">
+                    <span class="signout">Sign Out</span>
+                    <button class="logout-btn" id="logout-btn">
+                        <img src="ASSETS/ICONS/logout.png">
+                    </button>
+                </div>
+            </div>
+        </ul>
+
+    
+    </nav>
+
+   <script type="module" src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.min.js"></script>
+   <script type="module" src="ASSETS/JS/settings.js"></script>
+</body>
+</html>

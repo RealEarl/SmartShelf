@@ -67,11 +67,7 @@ void loop() {
     myStepper.runToNewPosition(2730);
     delay(500);
     Serial.println("TRIGGER_CAMERA_3");
-    delay(500);
-
-    // Finish
-    myStepper.runToNewPosition(stepsPerRevolution);
-      
+    delay(500);   
     Serial.println("Scanning Complete."); 
     Serial.println("Please remove the fruit.");
     

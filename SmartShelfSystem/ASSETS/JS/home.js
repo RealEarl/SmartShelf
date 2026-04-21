@@ -1,118 +1,102 @@
-// HOME PAGE JS - CAMERA & LOGOUT ONLY
+// HOME PAGE JS - CLEAN FIREBASE ONLY VERSION
 import { auth, database } from "../AUTH/firebaseAuth.js";
 import { signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js";
-import { ref, update, onDisconnect } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
+import { ref, update, onDisconnect, onValue } from "https://www.gstatic.com/firebasejs/12.9.0/firebase-database.js";
 
-document.addEventListener('DOMContentLoaded', function() {
-    const socket = io();
-    let isDetectionRunning = false;
+// 1. Auth Guard
+onAuthStateChanged(auth, (user) => {
+    if (user && user.emailVerified) {
+        initPage(user);
+    } else {
+        window.location.href = "/";
+    }
+});
 
-    // Presence System
-    onAuthStateChanged(auth, (user) => {
-        if (user) {
-            const userRef = ref(database, 'users/' + user.uid);
-            const phTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
-            onDisconnect(userRef).update({ status: "offline", last_logout: phTime });
+function initPage(user) {
+    // 2. Presence System (Optional pero maganda para sa Admin status)
+    const userRef = ref(database, 'users/' + user.uid);
+    const phTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
+    update(userRef, { status: "online", last_login: phTime });
+    onDisconnect(userRef).update({ status: "offline", last_logout: phTime });
+
+    // 3. MAIN LOGIC: COUNTER & TRAY GENERATOR
+    const fruitRef = ref(database, 'shelf/fruit');
+    
+    onValue(fruitRef, (snapshot) => {
+        const fruitData = snapshot.val();
+        
+        let totalCount = 0;
+        let freshCount = 0;
+        let overripeCount = 0;
+        let spoiledCount = 0;
+
+        const trayContainer = document.getElementById('tray-container');
+        if (trayContainer) {
+            trayContainer.innerHTML = ''; // Linisin muna ang container
         }
-    });
 
-    // Sidebar Active State Logic
-    const currentPage = window.location.pathname.split("/").pop();
-    const navItems = document.querySelectorAll('#sidebar ul li');
-    navItems.forEach(item => {
-        const link = item.querySelector('a');
-        if (link && (link.getAttribute('href') === currentPage || (currentPage === '' && link.getAttribute('href') === 'index.html'))) {
-            navItems.forEach(nav => nav.classList.remove('active'));
-            item.classList.add('active');
-        }
-    });
+        if (fruitData) {
+            let trayCounter = 1;
 
-    // Camera Controls
-    const startBtn = document.getElementById('startBtn');
-    const stopBtn = document.getElementById('stopBtn');
-    const cameraSelect = document.getElementById('cameraSelect');
-    const loadingSpinner = document.getElementById('loadingSpinner');
+            // I-loop ang pear, avocado, etc.
+            for (const fruitType in fruitData) {
+                const ids = fruitData[fruitType];
 
-    if (cameraSelect) {
-        cameraSelect.innerHTML = `
-            <option value="phone">Phone Camera (IP)</option>
-            <option value="0">USB Camera 0 (Default/BuiltIn)</option>
-            <option value="1">USB Camera 1</option>
-        `;
-    }
+                // I-loop ang ID1, ID2, ID3...
+                for (const idKey in ids) {
+                    const details = ids[idKey];
+                    totalCount++;
 
-    if (startBtn) {
-        startBtn.addEventListener('click', function() {
-            const cameraValue = cameraSelect.value;
-            socket.emit('start_detection', { camera_index: cameraValue });
-            isDetectionRunning = true;
-            this.disabled = true;
-            if (stopBtn) stopBtn.disabled = false;
-            if (loadingSpinner) loadingSpinner.style.display = 'flex';
-            const frame = document.getElementById('videoFeed');
-            if (frame && cameraValue === 'phone') frame.src = 'http://192.168.137.234:8080/video';
-        });
-    }
+                    // Counter Logic
+                    if (details.status === "Fresh") freshCount++;
+                    else if (details.status === "Overripe") overripeCount++;
+                    else if (details.status === "Spoiled") spoiledCount++;
 
-    if (stopBtn) {
-        stopBtn.addEventListener('click', function() {
-            socket.emit('stop_detection');
-            isDetectionRunning = false;
-            this.disabled = true;
-            if (startBtn) startBtn.disabled = false;
-            if (loadingSpinner) loadingSpinner.style.display = 'none';
-            const frame = document.getElementById('videoFeed');
-            if (frame) frame.src = '';
-            resetDashboardCounts();
-        });
-    }
+                    // --- GENERATE TRAY CARD ---
+                    if (trayContainer) {
+                        let sColor = "#000";
+                        if (details.status === "Fresh") sColor = "#065e20";
+                        else if (details.status === "Overripe") sColor = "#f0ad4e";
+                        else if (details.status === "Spoiled") sColor = "#d9534f";
 
-    // Detection Data (Cards Update Only)
-    socket.on('detection_data', function(data) {
-        if (loadingSpinner) loadingSpinner.style.display = 'none';
-        if (data.frame && cameraSelect.value !== 'phone') {
-            const frameEl = document.getElementById('videoFeed');
-            if (frameEl) frameEl.src = "data:image/jpeg;base64," + data.frame;
-        }
-        // Dashboard Summary Cards Update
-        if(document.getElementById('freshCount')) document.getElementById('freshCount').textContent = data.labels['Fresh'] || 0;
-        if(document.getElementById('spoiledCount')) document.getElementById('spoiledCount').textContent = data.labels['Spoiled'] || 0;
-    });
-
-    function resetDashboardCounts() {
-        if(document.getElementById('freshCount')) document.getElementById('freshCount').textContent = '0';
-        if(document.getElementById('spoiledCount')) document.getElementById('spoiledCount').textContent = '0';
-    }
-
-    // Logout Logic (Exactly mirrored with Reports)
-    const logoutBtn = document.getElementById('logout-btn');
-    if (logoutBtn) {
-        logoutBtn.addEventListener('click', async function (e) {
-            e.preventDefault();
-            if (confirm("Are you sure you want to logout?")) {
-                try {
-                    const user = auth.currentUser;
-                    if (user) {
-                        const userRef = ref(database, 'users/' + user.uid);
-                        const phTime = new Date().toLocaleString('en-PH', { timeZone: 'Asia/Manila' });
-                        console.log("Updating status to offline...");
-                        await update(userRef, { status: "offline", last_logout: phTime });
-                        console.log("Database updated!");
+                        const trayDiv = document.createElement('div');
+                        trayDiv.className = 'tray-card';
+                        trayDiv.innerHTML = `
+                            <div class="tray-header">TRAY ${trayCounter}:</div>
+                            <div class="tray-details">
+                                <p><strong>FRUIT:</strong> ${details.label || fruitType} (${idKey})</p>
+                                <p><strong>STATUS:</strong> <span style="color: ${sColor}; font-weight: bold;">${details.status || "N/A"}</span></p>
+                                <p><strong>ESTIMATED OVERRIPE:</strong> N/A Days</p>
+                                <p><strong>ESTIMATED SPOILAGE:</strong> ${details.estimated_shelf_life_days ?? 0} Days</p>
+                            </div>
+                        `;
+                        trayContainer.appendChild(trayDiv);
+                        trayCounter++;
                     }
-                    await signOut(auth);
-                    localStorage.clear();
-                    sessionStorage.clear();
-                    console.log("Redirecting...");
-                    window.location.href = '/';
-                } catch (error) {
-                    console.error("Logout Error:", error);
-                    window.location.href = '/';
                 }
             }
-        });
-    }
+        }
 
-    socket.on('connect', function() {
-    console.log("Connected to Flask Server (Home)");
-});
-});
+        // --- UPDATE TOP CARDS ---
+        const updateUI = (id, val) => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = val;
+        };
+
+        updateUI('total-fruits-count', totalCount);
+        updateUI('stats-count', freshCount);
+        updateUI('overripe-count', overripeCount);
+        updateUI('spoiled-count', spoiledCount);
+        
+    }, (error) => {
+        console.error("Firebase Error:", error);
+    });
+
+    // 4. Logout
+    document.getElementById('logout-btn')?.addEventListener('click', async () => {
+        if (confirm("Logout?")) {
+            await signOut(auth);
+            window.location.href = "/";
+        }
+    });
+}

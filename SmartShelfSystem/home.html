@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartShelf | Intelligent Monitoring System | Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playwrite+NZ+Basic+Guides&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet">    
+    <link rel="stylesheet" href="ASSETS/CSS/home.css">
+</head>
+<body>
+
+    <nav id="sidebar">
+        <ul>
+            <li class="name">
+                <h1 class="name-logo">Smart<span>SHELF</span></h1>
+                <button id="toggle-btn">
+                    <img src="ASSETS/ICONS/arrow-left.svg">
+                </button>
+            </li>
+            <div class="main-dash">
+                <div class="nav-links">
+                <li class="active">
+                    <a href="dashboard.html">
+                        <img src="ASSETS/ICONS/dashboard.svg">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="shelves.html">
+                        <img src="ASSETS/ICONS/shelves.svg">
+                        <span class="pang-hover">Shelves</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="reports.html">
+                        <img src="ASSETS/ICONS/reports.svg">
+                        <span class="pang-hover">Reports</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="settings.html">
+                        <img src="ASSETS/ICONS/settings.svg">
+                        <span class="pang-hover">Settings</span>
+                    </a>
+                </li>
+              </div>  
+                <div class="logout">
+                    <span class="signout">Sign Out</span>
+                    
+                        <button class="logout-btn" id="logout-btn">
+                            <img src="ASSETS/ICONS/logout.png">
+                        </button>
+                    
+                </div>
+            </div>
+        </ul>
+
+    
+    </nav>
+
+    <main>
+        <div class="main-status">
+            <div class="total-fruits">
+                <div class="status-wrapper">
+                    <div class="status-text-container">
+                        <span class="status">Total Fruits:</span>
+                        <span class="status-number" id="total-fruits-count">0</span>
+                    </div>
+                    
+                </div>
+                <img src="ASSETS/IMAGE/total-fruits.png" class="main-img">
+            </div>
+
+            <div class="fresh">
+                <div class="status-wrapper">
+                    <div class="status-text-container">
+                        <span class="status">Fresh:</span>
+                        <span class="status-number" id="stats-count">0</span>
+                    </div>
+                    
+                </div>
+                <img src="ASSETS/IMAGE/fresh.png" class="main-img">
+            </div>
+
+            <div class="needs-attention">
+                <div class="status-wrapper">
+                    <div class="status-text-container">
+                        <span class="status">Overripe:</span>
+                        <span class="status-number" id="overripe-count">0</span>
+                    </div>
+                </div>
+                <img src="ASSETS/IMAGE/needs-attention.png" class="main-img">
+            </div>
+
+            <div class="spoiled">
+                <div class="status-wrapper">
+                    <div class="status-text-container">
+                        <span class="status">Spoiled: </span>
+                        <span class="status-number" id="spoiled-count">0</span>
+                    </div>
+                </div>
+                <img src="ASSETS/IMAGE/spoiled.png" class="main-img">
+            </div>   
+        </div>
+        
+        <div class="tray-container" id="tray-container">
+            
+        </div>
+        
+    </main>
+
+    
+    <script type="module" src="ASSETS/JS/home.js"></script>
+</body>
+</html>
