@@ -58,6 +58,13 @@ def start_aruco():
         if ids is not None:
             for i in range(len(ids)):
                 marker_id = int(ids[i][0])
+                
+                # --- NEW VALIDATION FILTER ---
+                # Only process the tag if it is between 1 and 6
+                if marker_id < 1 or marker_id > 6:
+                    continue 
+                # -----------------------------
+
                 last_seen_timestamps[marker_id] = current_time
                 
                 pts = corners[i][0].astype(int)

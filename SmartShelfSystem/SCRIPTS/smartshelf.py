@@ -1,5 +1,5 @@
 import multiprocessing
-import capture_mainsystem
+import capture_mainsystem_button
 import aruco_subsystem
 
 if __name__ == '__main__':
@@ -10,7 +10,7 @@ if __name__ == '__main__':
     print("Booting SmartShelf Dual-Core Architecture...")
 
     # Assign the scripts to two different CPU processes
-    process_scanner = multiprocessing.Process(target=capture_mainsystem.start_scanner)
+    process_scanner = multiprocessing.Process(target=capture_mainsystem_button.start_scanner)
     process_aruco = multiprocessing.Process(target=aruco_subsystem.start_aruco)
 
     # Start them both at the exact same time

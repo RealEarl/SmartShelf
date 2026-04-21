@@ -51,8 +51,8 @@ def augment_images(input_folder, output_folder):
 
 if __name__ == "__main__":
     # Define your input and output directories here
-    input_dir = r"Y:\EXTRACTED_IMAGES\Datasets\AVOCADO\TRAINING_SPOILED"
-    output_dir = r"Y:\EXTRACTED_IMAGES\Datasets\AVOCADO\TRAINING_SPOILED" # Set to the same as input_dir to save alongside originals
+    input_dir = r"Y:\EXTRACTED_IMAGES\New folder\IMAGES"
+    output_dir = r"Y:\EXTRACTED_IMAGES\New folder\IMAGES" # Set to the same as input_dir to save alongside originals
         
     if not os.path.exists(input_dir):
         print(f"Error: Input folder '{input_dir}' does not exist.")
