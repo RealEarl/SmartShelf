@@ -25,8 +25,8 @@ def extract_frames(video_path, output_folder, frame_interval=5):
     print(f"Done! Extracted {extracted_count} frames out of {count} total frames to {output_folder}.")
 
 if __name__ == "__main__":
-    BASE_INPUT_DIR = r"Y:\EXTRACTED_IMAGES\New folder\VIDEO"
-    BASE_OUTPUT_DIR = r"Y:\EXTRACTED_IMAGES\New folder\VIDEO"
+    BASE_INPUT_DIR = r"C:\Users\Engr. Lei Justin\Videos\Record"
+    BASE_OUTPUT_DIR = r"C:\Users\Engr. Lei Justin\Videos\Record"
 
     video_extensions = ('.mp4', '.avi', '.mov', '.mkv', '.wmv', '.flv')
 
@@ -36,4 +36,4 @@ if __name__ == "__main__":
             video_name = os.path.splitext(filename)[0]
             output_folder = os.path.join(BASE_OUTPUT_DIR, video_name)
             
-            extract_frames(video_path, output_folder, frame_interval=45)
+            extract_frames(video_path, output_folder, frame_interval=15)

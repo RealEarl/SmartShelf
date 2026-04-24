@@ -2,6 +2,10 @@ import cv2
 import socketio
 import serial
 import os
+# ----modified----
+import datetime
+import pytz
+# ----end modified----
 
 # Set your ports and folders here
 COLAB_URL = "https://superprecise-lisha-unwelded.ngrok-free.dev"
@@ -12,7 +16,7 @@ def start_scanner():
     os.makedirs(SAVE_FOLDER, exist_ok=True)
 
     cv2.namedWindow('SmartShelf Live Feed', cv2.WINDOW_NORMAL)
-    cv2.resizeWindow('SmartShelf Live Feed', 1280, 720)
+    cv2.resizeWindow('SmartShelf Live Feed', 640, 360)
 
     # Connect to Arduino/ESP32 (Motor)
     try:
@@ -91,9 +95,15 @@ def start_scanner():
                     print(f"Image {pic_num}/3 captured and buffered.")
 
                     if pic_num == 3:
+                        # ----modified----
+                        manila_tz = pytz.timezone('Asia/Manila')
+                        ph_time = datetime.datetime.now(manila_tz).strftime("%Y-%m-%d %H:%M:%S")
+                        
                         payload = {
-                            'images': image_buffer
+                            'images': image_buffer,
+                            'timestamp': ph_time
                         }
+                        # ----end modified----
                         sio.emit('process_data', payload)
                         print(f"Complete payload for ID_{fruit_id} sent to Colab.")
                         image_buffer = []
@@ -110,5 +120,5 @@ def start_scanner():
     arduino.close()
 
 # Add this at the very bottom of the file!
-if __name__ == '__main__':
+if __name__ == 'main':
     start_scanner()

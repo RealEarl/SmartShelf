@@ -70,7 +70,7 @@
  [],
  False,
  False,
- 1776779632,
+ 1777011034,
  [('run.exe',
    'c:\\Workspace\\Project\\Python\\SmartShelf\\.venv\\Lib\\site-packages\\PyInstaller\\bootloader\\Windows-64bit-intel\\run.exe',
    'EXECUTABLE')],

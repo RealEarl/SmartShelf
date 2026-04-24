@@ -34,8 +34,6 @@ def start_aruco():
 
     # Note: Ensure this camera index (1) doesn't conflict with your main scanner if running on the same PC
     cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
-    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
-    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
     last_seen_timestamps = {}
     current_system_state = "idle"
